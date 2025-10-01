@@ -6,6 +6,14 @@ import { hasEnvVars } from "@/lib/utils";
 import Link from "next/link";
 import getColaboradores from "@/app/colaboradores/page";
 
+interface ColaboradorProps {
+  id: number;
+  nome: string;
+  matricula: string;
+  cargo: string;
+  funcao: Array<string>;
+}
+
 export default async function Home() {
   const colaboradores = await getColaboradores();
 
@@ -25,9 +33,9 @@ export default async function Home() {
         </nav>
         <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
           <ul>
-            {colaboradores.map((colaborador: any) => (
+            {colaboradores.map((colaborador: ColaboradorProps) => (
               <li key={colaborador.id}>
-                {colaborador.nome} - {colaborador.cargo}
+                {colaborador.nome} - {colaborador.cargo} - {colaborador.funcao.join(", ")}
               </li>
             ))}
           </ul>
