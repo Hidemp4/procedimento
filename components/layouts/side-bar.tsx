@@ -10,7 +10,7 @@ export function SideBar() {
                 <Link
                     href={item.link}
                     key={index}
-                    className="flex items-center p-2 gap-2 rounded-md hover:bg-gray-200 whitespace-nowrap"
+                    className="flex items-center p-2 gap-2 rounded-md hover:bg-[#d1d1d1] whitespace-nowrap text-[#717171]"
                 >
                     <div className="shrink-0">
                         {item.icon}
