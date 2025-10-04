@@ -1,10 +1,11 @@
-// import getColaboradores from "@/services/colaboradores.service";
+
 import { columns } from "./columns"
 import { DataTable } from "./data-table"
-import getColaboradores from "@/services/colaboradores.service";
+import { getColaboradores } from "@/services/colaboradores.service";
+import type { colaboradores } from "@prisma/client";
 
 export default async function HomePage() {
-  const data = await getColaboradores();
+  const data: colaboradores[] = await getColaboradores();
 
   return (
     <div className="grid grid-cols-[60px]">

@@ -1,16 +1,11 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
 
-export type Colaborador = {
-  id: string
-  nome: string
-  matricula: string
-  cargo: string
-  funcao: Array<string>
-}
+export type Colaborador = Prisma.colaboradoresGetPayload<object>;
 
 export const columns: ColumnDef<Colaborador>[] = [
   {

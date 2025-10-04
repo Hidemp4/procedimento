@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model colaborador_procedimento {
+  id              Int        @id @default(autoincrement())
+  created_at      DateTime      @default(now()) @db.Timestamptz(6)
+  assinado        Boolean?      @default(false)
+  data_assinatura DateTime?     @db.Date
+  colaboradores   colaboradores @relation(fields: [id], references: [id], onDelete: Cascade)
+  procedimentos   procedimentos @relation(fields: [id], references: [id], onDelete: Cascade, map: "colaborador_procedimento_id_fkey1")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model colaboradores {
+  id                       Int                    @id @default(autoincrement())
+  nome                     String?                   @db.VarChar
+  matricula                String?                   @unique @db.VarChar
+  cargo                    String?                   @db.VarChar
+  funcao                   Json?
+  created_at               DateTime                  @default(now()) @db.Timestamptz(6)
+  colaborador_procedimento colaborador_procedimento?
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model procedimentos {
+  id                       Int                    @id @default(autoincrement())
+  nome                     String?                   @db.VarChar
+  numero                   String?                   @unique @default("") @db.VarChar
+  data_validade            DateTime?                 @db.Date
+  created_at               DateTime                  @default(now()) @db.Timestamptz(6)
+  colaborador_procedimento colaborador_procedimento?
+}
