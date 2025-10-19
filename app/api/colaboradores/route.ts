@@ -38,7 +38,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { nome, matricula, cargo, funcao } = await body;
+    const { nome, matricula, cargo, funcao } = body;
 
     // Verifica se todos os campos obrigatórios possuem na requisição
     if (!body.nome || !body.matricula) {
@@ -53,8 +53,8 @@ export async function POST(req: Request) {
       data: {
         nome,
         matricula,
-        cargo,
-        funcao,
+        cargo: cargo ?? "",
+        funcao: funcao ?? [],
       },
     });
 

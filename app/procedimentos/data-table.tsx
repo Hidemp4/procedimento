@@ -73,63 +73,17 @@ export function DataTable<TData, TValue>({
 
   const [countFilters, setCountFilters] = useState(0);
 
-  const functionsOptions = [
-    { value: 'nenhum', label: 'N/A' },
-    { value: 'AV', label: 'AV' },
-    { value: 'BOIX', label: 'BOIX' },
-    { value: 'Conferência Manual', label: 'Conferência - Manual' },
-    { value: 'Conferência Móvel', label: 'Conferência - Móvel' },
-    { value: 'Conferência Sistema', label: 'Conferência - Sistema' },
-    { value: 'Grandes Volumes', label: 'Grandes Volumes' },
-    { value: 'Plasmetal', label: 'Plasmetal' },
-    { value: 'Faturamento', label: 'Faturamento' },
-    { value: 'One Time', label: 'One Time' },
-    { value: 'Ressuprimento', label: 'Ressuprimento' },
-    { value: 'RFID', label: 'RFID' },
-    { value: 'Separação', label: 'Separação' },
-  ];
-
-  // ---- INSERT Colaboradores ----
-
-  const [nomeColaborador, setNomeColaborador] = useState("");
-  const [matriculaColaborador, setMatriculaColaborador] = useState("");
-  const [cargoColaborador, setCargoColaborador] = useState("");
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
-
-  const handleInsert = async () => {
-    const payload = {
-      nome: nomeColaborador,
-      matricula: matriculaColaborador,
-      cargo: cargoColaborador,
-      funcao: selectedValues,
-    };
-
-    try {
-      const res = await fetch("/api/colaboradores", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-
-      if (!res.ok) throw new Error("Erro ao inserir colaborador");
-
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   // Pega os valores dos inputs (ou filtros)
   const nome = (table.getColumn("nome")?.getFilterValue() as string) ?? "";
-  const matricula = (table.getColumn("matricula")?.getFilterValue() as string) ?? "";
-  const cargo = (table.getColumn("cargo")?.getFilterValue() as string) ?? "";
+  const numero = (table.getColumn("numero")?.getFilterValue() as string) ?? "";
+  const dataValidade = (table.getColumn("data_validade")?.getFilterValue() as string) ?? "";
 
   useEffect(() => {
     // Conta quantos filtros estão "ativos"
-    const ativos = [nome, matricula, cargo].filter((v) => v && v.trim() !== "").length;
+    const ativos = [nome, numero, dataValidade].filter((v) => v && v.trim() !== "").length;
     console.log("Valor ativos: ", ativos)
     setCountFilters(ativos);
-  }, [nome, matricula, cargo]);
+  }, [nome, numero, dataValidade]);
 
 
   return (
@@ -171,13 +125,13 @@ export function DataTable<TData, TValue>({
                     <SheetTitle>Filtrar por:</SheetTitle>
                     <SheetDescription className="space-y-5">
                       <div className="flex flex-col justify-start gap-2">
-                        <label htmlFor="nome-colaborador">
-                          Nome:
+                        <label htmlFor="nome-procedimento">
+                          Nome do Procedimento:
                         </label>
                         <div className="grid flex-1 gap-2">
                           <Input
-                            id="nome-colaborador"
-                            placeholder="Nome do colaborador"
+                            id="nome-procedimento"
+                            placeholder="Nome do Procedimento"
                             value={nome}
                             onChange={(e) => table.getColumn("nome")?.setFilterValue(e.target.value)}
                             className="max-w-sm"
@@ -185,29 +139,29 @@ export function DataTable<TData, TValue>({
                         </div>
                       </div>
                       <div className="flex flex-col justify-start gap-2">
-                        <label htmlFor="matricula-colaborador">
-                          Matrícula:
+                        <label htmlFor="numero-procedimento">
+                          Número:
                         </label>
                         <div className="grid flex-1 gap-2">
                           <Input
-                            id="matricula-colaborador"
-                            placeholder="Ex: 21474"
-                            value={matricula}
-                            onChange={(e) => table.getColumn("matricula")?.setFilterValue(e.target.value)}
+                            id="numero-procedimento"
+                            placeholder="Ex: DI.POP.013"
+                            value={numero}
+                            onChange={(e) => table.getColumn("numero")?.setFilterValue(e.target.value)}
                             className="max-w-sm"
                           />
                         </div>
                       </div>
 
                       <div className="flex flex-col justify-start gap-2">
-                        <label htmlFor="cargo-colaborador">
-                          Cargo:
+                        <label>
+                          Data Validade:
                         </label>
                         <div className="grid flex-1 gap-2">
                           <Input
-                            placeholder="Ex: Auxiliar de Operações"
-                            value={cargo}
-                            onChange={(e) => table.getColumn("cargo")?.setFilterValue(e.target.value)}
+                            placeholder="Ex: 18/04/2027"
+                            value={dataValidade}
+                            onChange={(e) => table.getColumn("data_validade")?.setFilterValue(e.target.value)}
                             className="max-w-sm"
                           />
                         </div>
@@ -219,88 +173,6 @@ export function DataTable<TData, TValue>({
 
               {/* Separador de botões */}
               <div className="h-[30px] w-px border-r border-control"></div>
-
-              {/* Botão para Inserir */}
-              <Sheet>
-                <SheetTrigger>
-                  <Button variant="outline">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="m9 12.75 3 3m0 0 3-3m-3 3v-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                    </svg>
-                    <span>Inserir</span>
-                  </Button>
-                </SheetTrigger>
-                <SheetContent>
-                  <SheetHeader>
-                    <SheetTitle>Inserir Colaborador:</SheetTitle>
-                    <SheetDescription className="space-y-5">
-                      <div className="flex flex-col justify-start gap-2">
-                        <label htmlFor="nome-colaborador">
-                          Nome Completo:
-                        </label>
-                        <div className="grid flex-1 gap-2">
-                          <Input
-                            id="nome-colaborador"
-                            placeholder="Nome do colaborador"
-                            className="max-w-sm"
-                            value={nomeColaborador}
-                            onChange={(e) => setNomeColaborador(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <div className="flex flex-col justify-start gap-2">
-                        <label htmlFor="matricula-colaborador">
-                          Matrícula:
-                        </label>
-                        <div className="grid flex-1 gap-2">
-                          <Input
-                            id="matricula-colaborador"
-                            placeholder="Ex: 21474"
-                            className="max-w-sm"
-                            value={matriculaColaborador}
-                            onChange={(e) => setMatriculaColaborador(e.target.value)}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="flex flex-col justify-start gap-2">
-                        <label htmlFor="cargo-colaborador">
-                          Cargo:
-                        </label>
-                        <Select onValueChange={(value) => setCargoColaborador(value)}>
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Selecione o cargo" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="nenhum">N/A</SelectItem>
-                            <SelectItem value="Auxiliar de Operações">Auxiliar de Operações</SelectItem>
-                            <SelectItem value="Conferente">Conferente</SelectItem>
-                            <SelectItem value="Assistente de Operações">Assistente de Operações</SelectItem>
-                            <SelectItem value="Técnico de Operações">Técnico de Operações</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="mb-4">
-                        <label>
-                          Funções:
-                        </label>
-                        <div className="w-full max-w-sm">
-                          <MultiSelect
-                            options={functionsOptions}
-                            value={selectedValues}
-                            onChange={setSelectedValues}
-                            placeholder="Selecione as funções..."
-                          />
-                        </div>
-                      </div>
-                    </SheetDescription>
-
-                    <Button onClick={handleInsert}>Inserir Colaborador</Button>
-                    <Button variant="secondary">Cancelar</Button>
-                  </SheetHeader>
-                </SheetContent>
-              </Sheet>
             </div>
           </div>
 
