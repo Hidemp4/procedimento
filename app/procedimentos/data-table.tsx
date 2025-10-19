@@ -25,18 +25,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import * as React from "react"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import MultiSelect from "@/components/ui/multiselect"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
