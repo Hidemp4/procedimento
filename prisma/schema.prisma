@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -5,36 +6,60 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model colaborador_procedimento {
-  id              Int        @id @default(autoincrement())
-  created_at      DateTime      @default(now()) @db.Timestamptz(6)
-  assinado        Boolean?      @default(false)
-  data_assinatura DateTime?     @db.Date
-  colaboradores   colaboradores @relation(fields: [id], references: [id], onDelete: Cascade)
-  procedimentos   procedimentos @relation(fields: [id], references: [id], onDelete: Cascade, map: "colaborador_procedimento_id_fkey1")
+// ----------------------------------------------------
+//  ENUMS
+// ----------------------------------------------------
+enum Funcao {
+  AV
+  BOIX
+  CONFERENCIA_MANUAL  @map("Conferência Manual")
+  CONFERENCIA_MOVEL   @map("Conferência Móvel")
+  CONFERENCIA_SISTEMA @map("Conferência Sistema")
+  GRANDES_VOLUMES     @map("Grandes Volumes")
+  PLASMETAL
+  FATURAMENTO
+  ONE_TIME            @map("One Time")
+  RESSUPRIMENTO
+  RFID
+  SEPARACAO           @map("Separação")
 }
 
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model colaboradores {
-  id                       Int                    @id @default(autoincrement())
-  nome                     String?                   @db.VarChar
-  matricula                String?                   @unique @db.VarChar
-  cargo                    String?                   @db.VarChar
-  funcao                   Json?
-  created_at               DateTime                  @default(now()) @db.Timestamptz(6)
-  colaborador_procedimento colaborador_procedimento?
+  id           Int                       @id @default(autoincrement())
+  nome         String?                   @db.VarChar
+  matricula    String?                   @unique @db.VarChar
+  cargo        String?                   @db.VarChar
+  funcao       Funcao[]
+  created_at   DateTime                  @default(now()) @db.Timestamptz(6)
+
+  procedimentos colaborador_procedimento[]
 }
 
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model procedimentos {
-  id                       Int                    @id @default(autoincrement())
-  nome                     String?                   @db.VarChar
-  numero                   String?                   @unique @default("") @db.VarChar
-  data_validade            DateTime?                 @db.Date
-  created_at               DateTime                  @default(now()) @db.Timestamptz(6)
-  colaborador_procedimento colaborador_procedimento?
+  id                 Int                       @id @default(autoincrement())
+  nome               String?                   @db.VarChar
+  numero             String?                   @unique @default("") @db.VarChar
+  data_validade      DateTime?                 @db.Date
+  funcoes_vinculadas Funcao[]  
+  created_at         DateTime                  @default(now()) @db.Timestamptz(6)
+
+  colaboradores colaborador_procedimento[]
+}
+
+model colaborador_procedimento {
+  id                 Int          @id @default(autoincrement())
+  colaborador_id     Int
+  procedimento_id    Int
+  assinado           Boolean      @default(false)
+  data_assinatura    DateTime?    @db.Date
+  funcoes_vinculadas Funcao[]
+  created_at         DateTime     @default(now()) @db.Timestamptz(6)
+
+  colaborador  colaboradores @relation(fields: [colaborador_id], references: [id], onDelete: Cascade)
+  procedimento procedimentos @relation(fields: [procedimento_id], references: [id], onDelete: Cascade)
+
+  // Garante que o mesmo colaborador não vincule o mesmo procedimento mais de uma vez
+  @@unique([colaborador_id, procedimento_id])
 }

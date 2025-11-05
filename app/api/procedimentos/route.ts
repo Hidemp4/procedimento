@@ -32,3 +32,31 @@ export async function GET() {
         );
     }
 }
+
+export async function POST(req: Request) {
+  try {
+    const { nome, numero, data_validade, funcoes_vinculadas } = await req.json();
+
+    // Cria o procedimento com as funções vinculadas
+    const newProcedimento = await prisma.procedimentos.create({
+      data: {
+        nome,
+        numero,
+        data_validade: data_validade ? new Date(data_validade) : null,
+        funcoes_vinculadas,
+      }
+    });
+
+    return NextResponse.json(
+      { message: "Procedimento criado com sucesso!", data: newProcedimento },
+      { status: 201 }
+    );
+  } catch (err) {
+    console.error("[ERRO] Erro ao criar procedimento!", err);
+
+    return NextResponse.json(
+      { message: "[ERRO] Erro ao criar procedimento!", err },
+      { status: 500 }
+    );
+  }
+}

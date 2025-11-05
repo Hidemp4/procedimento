@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-
 export async function GET() {
   try {
     const allColaboradores = await prisma.colaboradores.findMany();
@@ -60,17 +59,17 @@ export async function POST(req: Request) {
 
     return Response.json(
       {
-        message: "Usuário Criado",
+        message: "Colaborador Criado",
         createColaborador,
       },
       { status: 201 }
     );
   } catch (err) {
-    console.error("[ERRO] Este usuário não pode ser criado!");
+    console.error("[ERRO] Este colaborador não pode ser criado!");
 
     return NextResponse.json(
       {
-        message: "[ERRO] Este usuário não pode ser criado!",
+        message: "[ERRO] Este Colaborador não pode ser criado!",
         err,
       },
       { status: 500 }
