@@ -1,6 +1,6 @@
 import { AuthButton } from "../auth-button";
 
-export function Header({ user: user }: { user: any }) {
+export function Header() {
     return (
         <div className="col-start-1 col-end-12 h-12">
             <div className="flex items-center h-full p-3 gap-2 border-b">

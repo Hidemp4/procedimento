@@ -16,14 +16,14 @@ export async function createClient() {
           try {
             cookieStore.set({ name, value, ...options });
           } catch (error) {
-            // Cookies podem não estar disponíveis em alguns contextos
+            console.error(error);
           }
         },
         remove(name: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value: "", ...options });
           } catch (error) {
-            // Cookies podem não estar disponíveis em alguns contextos
+            console.error(error);
           }
         },
       },
