@@ -16,7 +16,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { HeaderTable } from "../(dashboard)/colaboradores/header-table"
+import { HeaderTable } from "./header-table"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -37,7 +37,7 @@ export function DataTable<TData, TValue>({
     })
 
     return (
-        <div className="overflow-hidden rounded-md border">
+        <div className="overflow-hidden rounded-md border w-full">
             <Table>
                 <TableHeader>
                     <HeaderTable table={table} />

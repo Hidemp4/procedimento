@@ -1,5 +1,6 @@
 
 import { prisma } from "@/lib/prisma";
+import { Funcao } from "@prisma/client";
 
 export async function getColaboradores() {
   try {
@@ -15,7 +16,7 @@ export async function createColaborador(data: {
   nome: string;
   matricula: string;
   cargo: string;
-  funcao: string[];
+  funcao: Funcao[];
 }) {
   try {
     const novoColaborador = await prisma.colaboradores.create({
