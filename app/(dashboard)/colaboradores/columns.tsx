@@ -1,15 +1,7 @@
 "use client"
 
-import { Funcao } from "@prisma/client"
 import { ColumnDef } from "@tanstack/react-table"
-
-type ColaboradorType = {
-  id: number
-  nome: string | null
-  matricula: string | null
-  cargo: string | null
-  funcao: Funcao[]
-}
+import { ColaboradorType } from "@/types/colaborador"
 
 export const columns: ColumnDef<ColaboradorType>[] = [
   {
