@@ -1,5 +1,6 @@
 
 import { prisma } from "@/lib/prisma";
+import { Funcao } from "@prisma/client";
 
 export async function getColaboradores() {
   try {
@@ -7,7 +8,7 @@ export async function getColaboradores() {
     return colaboradores;
   } catch (error) {
     console.error("Erro ao buscar colaboradores:", error);
-    return []; // Retorna array vazio em caso de erro
+    return [];
   }
 }
 
@@ -15,10 +16,10 @@ export async function createColaborador(data: {
   nome: string;
   matricula: string;
   cargo: string;
-  funcao: string[];
+  funcao: Funcao[];
 }) {
   try {
-    const novoColaborador = await prisma.colaboradores.create({
+    const newColaborador = await prisma.colaboradores.create({
       data: {
         nome: data.nome,
         matricula: data.matricula,
@@ -27,7 +28,7 @@ export async function createColaborador(data: {
       },
     });
 
-    return novoColaborador;
+    return newColaborador;
   } catch (error) {
     console.error("Erro ao inserir colaborador: ", error);
     throw new Error("Falha ao inserir colaborador");

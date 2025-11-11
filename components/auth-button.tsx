@@ -1,20 +1,18 @@
+"use client";
 
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/client";
 
-export async function AuthButton() {
-  const supabase = await createClient();
+export function AuthButton() {
+  const supabase = createClient();
 
-  // You can also use getUser() which will be slower.
-  const { data } = await supabase.auth.getClaims();
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    location.reload();
+  };
 
-  const user = data?.claims;
-
-  return user ? (
-    <div className="flex items-center gap-4">
-      Olá, {user.email}!
-    </div>
-  ) : (
-    <>
-    </>
+  return (
+    <button onClick={handleLogout} className="text-sm font-medium text-gray-600">
+      Sair
+    </button>
   );
 }
