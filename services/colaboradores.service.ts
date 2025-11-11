@@ -19,7 +19,7 @@ export async function createColaborador(data: {
   funcao: Funcao[];
 }) {
   try {
-    const novoColaborador = await prisma.colaboradores.create({
+    const newColaborador = await prisma.colaboradores.create({
       data: {
         nome: data.nome,
         matricula: data.matricula,
@@ -28,7 +28,7 @@ export async function createColaborador(data: {
       },
     });
 
-    return novoColaborador;
+    return newColaborador;
   } catch (error) {
     console.error("Erro ao inserir colaborador: ", error);
     throw new Error("Falha ao inserir colaborador");

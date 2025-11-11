@@ -18,15 +18,15 @@ import {
 } from "@/components/ui/table"
 import { HeaderTable } from "./header-table"
 
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
-    data: TData[]
+interface DataTableProps<T> {
+    columns: ColumnDef<T>[]
+    data: T[]
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<T>({
     columns,
     data,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<T>) {
 
     const table = useReactTable({
         data,
