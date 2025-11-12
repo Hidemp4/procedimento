@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { $Enums, Funcao } from '@prisma/client';
+import { Funcao } from '@prisma/client';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useEffect, useState, useRef } from "react";
 import { ChevronDown, X, Check } from 'lucide-react';
@@ -202,7 +202,7 @@ export function HeaderTable<T>({
                                             {isOpen && (
                                                 <div className="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-xl max-h-64 overflow-y-auto">
                                                     <div className="p-2">
-                                                        {Object.entries($Enums.Funcao).map(([key, value]) => (
+                                                        {Object.entries(Funcao).map(([key, value]) => (
                                                             <button
                                                                 key={key}
                                                                 type="button"
