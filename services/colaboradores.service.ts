@@ -1,3 +1,4 @@
+"use server";
 
 import { prisma } from "@/lib/prisma";
 import { Funcao } from "@prisma/client";
