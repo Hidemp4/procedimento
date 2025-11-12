@@ -1,13 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Funcao } from '@prisma/client';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useEffect, useState, useRef } from "react";
 import { ChevronDown, X, Check } from 'lucide-react';
 import {
-    Table,
+    Table
 } from "@tanstack/react-table"
-import { ColaboradorDTO } from "@/types/colaborador";
+import { ColaboradorDTO, FuncaoType } from "@/types/colaborador";
 
 interface DataTableProps<T> {
     table: Table<T>
@@ -39,7 +38,9 @@ export function HeaderTable<T>({
     const [nomeColaborador, setNomeColaborador] = useState("");
     const [matriculaColaborador, setMatriculaColaborador] = useState("");
     const [cargoColaborador, setCargoColaborador] = useState("");
-    const [funcoesSelecionadas, setFuncoesSelecionadas] = useState<Funcao[]>([]);
+    const [funcoesSelecionadas, setFuncoesSelecionadas] = useState<FuncaoType[]>([]);
+
+    const allFuncoes: FuncaoType[] = ['AV', 'BOIX', 'CONFERENCIA_MANUAL', 'CONFERENCIA_MOVEL', 'CONFERENCIA_SISTEMA', 'GRANDES_VOLUMES', 'PLASMETAL', 'FATURAMENTO', 'ONE_TIME', 'RESSUPRIMENTO', 'RFID', 'SEPARACAO']
 
     // Estado para controle do dropdown de funções
     const [isOpen, setIsOpen] = useState(false);
@@ -58,16 +59,16 @@ export function HeaderTable<T>({
     }, []);
 
     // Adiciona uma função da lista de funções selecionadas
-    const toggleFuncao = (funcao: Funcao) => {
-        if (funcoesSelecionadas.includes(funcao)) {
-            setFuncoesSelecionadas(funcoesSelecionadas.filter((f) => f !== funcao));
-        } else {
-            setFuncoesSelecionadas([...funcoesSelecionadas, funcao]);
-        }
-    };
+    const toggleFuncao = (funcao: FuncaoType) => {
+    setFuncoesSelecionadas(prev =>
+      prev.includes(funcao)
+        ? prev.filter(f => f !== funcao)
+        : [...prev, funcao]
+    );
+  };
 
     // Remove uma função da lista de funções selecionadas
-    const removeFuncao = (funcao: Funcao) => {
+    const removeFuncao = (funcao: FuncaoType) => {
         setFuncoesSelecionadas(funcoesSelecionadas.filter((f) => f !== funcao));
     };
 
@@ -202,9 +203,9 @@ export function HeaderTable<T>({
                                             {isOpen && (
                                                 <div className="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-xl max-h-64 overflow-y-auto">
                                                     <div className="p-2">
-                                                        {Object.entries(Funcao).map(([key, value]) => (
+                                                        {allFuncoes.map(value => (
                                                             <button
-                                                                key={key}
+                                                                key={value}
                                                                 type="button"
                                                                 onClick={() => toggleFuncao(value)}
                                                                 className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-blue-50 rounded-md transition-colors duration-150 group"
